@@ -20,9 +20,9 @@ void sendSensor()
     float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
     float p = ph.readPH();
 
-    if (isnan(h) || isnan(t))
+    if (isnan(h) || isnan(t) || isnan(p))
     {
-        SwSerial.println("Failed to read from DHT sensor!");
+        SwSerial.println("Failed to read from DHT sensor or PH!");
         return;
     }
     // You can send any value at any time.
@@ -38,13 +38,12 @@ void setup()
     Serial.begin(9600);
     Blynk.begin(Serial, auth);
     dht.begin();
-
+    //Time between read
     timer.setInterval(1000L, sendSensor);
 }
 
 void loop()
 {
-    Serial.println(ph.readPH());
     Blynk.run();
     timer.run();
 }
