@@ -4,14 +4,16 @@
 #include <BlynkSimpleStream.h>
 #include <SoftwareSerial.h>
 
+#define DHT_TYPE DHT11
 #define PH_pin A5
 #define DHT_pin 3
 
 SoftwareSerial SwSerial(10, 11); // RX, TX
 PH ph(PH_pin);
-DHT dht(DHT_pin, DHT11);
+DHT dht(DHT_pin, DHT_TYPE);
 BlynkTimer timer;
 
+//Auth token in Blynk App
 char auth[] = "04NBYveCfAJ3HLTW_CwMVkBE9tHP7t9D";
 
 void sendSensor()
