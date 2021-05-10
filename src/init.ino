@@ -21,10 +21,12 @@ void sendSensor()
     float h = dht.readHumidity();
     float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
     float p = ph.readPH();
-
     if (isnan(h) || isnan(t) || isnan(p))
     {
+        //Use Serial for Bluetooth connection
         Serial.println("Failed to read from DHT sensor or PH!");
+        //Use SwSerial for USB connection
+        //SwSerial.println("Failed to read from DHT sensor!");
         return;
     }
     // You can send any value at any time.
@@ -38,10 +40,11 @@ void setup()
 {
     //Debug console
     Serial.begin(9600);
-    //USB connection
-    SwSerial.begin(9600);
     //Bluetooth connection
+    SwSerial.begin(9600);
     Blynk.begin(SwSerial, auth);
+    //Uncomment this for USB connection and comment the line abone
+    // Blynk.begin(Serial, auth);
     dht.begin();
     //Time between read
     timer.setInterval(1000L, sendSensor);
