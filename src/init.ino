@@ -1,8 +1,8 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #include <PH.h>
-#include <BlynkSimpleStream.h>
 #include <SoftwareSerial.h>
+#include <BlynkSimpleSerialBLE.h>
 
 #define DHT_TYPE DHT11
 #define PH_pin A5
@@ -14,7 +14,7 @@ DHT dht(DHT_pin, DHT_TYPE);
 BlynkTimer timer;
 
 //Auth token in Blynk App
-char auth[] = "04NBYveCfAJ3HLTW_CwMVkBE9tHP7t9D";
+char auth[] = "nn2BAm1jbkhYYdcsazgDxVib_a_ND3Z0";
 
 void sendSensor()
 {
@@ -24,7 +24,7 @@ void sendSensor()
 
     if (isnan(h) || isnan(t) || isnan(p))
     {
-        SwSerial.println("Failed to read from DHT sensor or PH!");
+        Serial.println("Failed to read from DHT sensor or PH!");
         return;
     }
     // You can send any value at any time.
@@ -36,9 +36,12 @@ void sendSensor()
 
 void setup()
 {
-    SwSerial.begin(9600);
+    //Debug console
     Serial.begin(9600);
-    Blynk.begin(Serial, auth);
+    //USB connection
+    SwSerial.begin(9600);
+    //Bluetooth connection
+    Blynk.begin(SwSerial, auth);
     dht.begin();
     //Time between read
     timer.setInterval(1000L, sendSensor);
